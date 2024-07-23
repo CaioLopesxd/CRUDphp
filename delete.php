@@ -8,5 +8,5 @@ if($id){
     $sql->bindValue(':id', $id);
     $sql->execute();
 }
-header('Location: home.php');
+header('Location: listaDeClientes.php');
 ?>

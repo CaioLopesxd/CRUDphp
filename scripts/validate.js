@@ -1,0 +1,20 @@
+function formatTelefone(value) {
+  value = value.replace(/\D/g, ""); // Remove caracteres não numéricos
+  if (value.length > 11) value = value.slice(0, 11); // Limita a 11 dígitos
+  return value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+}
+
+function formatCPF(value) {
+  value = value.replace(/\D/g, ""); // Remove caracteres não numéricos
+  if (value.length > 11) value = value.slice(0, 11); // Limita a 11 dígitos
+  return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+}
+
+function handleInput(event) {
+  const input = event.target;
+  if (input.id === "telefone") {
+    input.value = formatTelefone(input.value);
+  } else if (input.id === "cpf") {
+    input.value = formatCPF(input.value);
+  }
+}

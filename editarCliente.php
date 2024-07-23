@@ -1,42 +1,37 @@
 <?php
 
-require "config.php";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-// Verifica se todos os campos foram enviados via POST
-if (isset($_POST['cliente_id'], $_POST['edit_nome'], $_POST['edit_email'], $_POST['edit_telefone'], $_POST['edit_cpf'])) {
-    
-    $cliente_id = $_POST['cliente_id'];
-    $nome = $_POST['edit_nome'];
-    $email = $_POST['edit_email'];
-    $telefone = $_POST['edit_telefone'];
-    $cpf = $_POST['edit_cpf'];
+    require "config.php";
 
-    // Verifica se o CPF já está cadastrado para outro cliente
-    $cpfStmt = $pdo->prepare("SELECT * FROM clients WHERE cpf = :cpf AND id <> :id");
-    $cpfStmt->execute([':cpf' => $cpf, ':id' => $cliente_id]);
+    $id = $_POST['id'];
+    $nome = $_POST['nome'];
+    $email = $_POST['email'];
+    $telefone = $_POST['telefone'];
+    $cpf = $_POST['cpf'];
 
-
-    // Atualiza os dados do cliente no banco de dados
+   
     $sql = "UPDATE clients SET nome = :nome, email = :email, telefone = :telefone, cpf = :cpf WHERE id = :id";
+    
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        ':nome' => $nome,
-        ':email' => $email,
-        ':telefone' => $telefone,
-        ':cpf' => $cpf,
-        ':id' => $cliente_id
-    ]);
+    $stmt->bindParam(':id', $id);
+    $stmt->bindParam(':nome', $nome);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':telefone', $telefone);
+    $stmt->bindParam(':cpf', $cpf);
+    
+   
+    if ($stmt->execute()) {
 
-    echo "
-    <script>
-        alert('Cliente atualizado com sucesso!');
-        window.location.href = 'home.php';
-    </script>";
-    exit;
+        header('Location: listaDeClientes.php');
+        exit();
+    } else {
+      
+        echo "Erro ao tentar atualizar o cliente.";
+    }
+    
 } else {
-    // Se algum campo não foi enviado via POST, redireciona para a página inicial
-    header('Location: home.php');
-    exit;
-}
 
+    echo "Método não permitido.";
+}
 ?>

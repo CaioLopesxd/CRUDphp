@@ -13,7 +13,7 @@ $emailStmt = $pdo->prepare("SELECT * FROM clients WHERE email = :email");
 $cpfStmt->execute([':cpf' => $cpf]);
 $emailStmt->execute([':email' => $email]);
 
-if ($cpfStmt->rowCount() > 0) {
+if ($cpfStmt->rowCount() > 1) {
     echo "
     <script>
         alert('CPF já cadastrado!');
@@ -23,30 +23,23 @@ if ($cpfStmt->rowCount() > 0) {
     exit;
 }
 
-if ($emailStmt->rowCount() > 0) {
+if ($emailStmt->rowCount() > 1) {
     echo "
-    <script>
-        const debug = document.getElementById('debug');
-        window.location.href = 'telaCadastro.php';
-    </script>
+   <script>
+            alert('Email já cadastrado!');
+            window.location.href = 'telaCadastro.php';
+        </script>
     ";
     exit;
 }
 
-function addDatabase($pdo, $nome, $email, $telefone, $cpf) {
-    $sql = $pdo->prepare("INSERT INTO clients (nome, email, telefone, cpf) VALUES (:nome, :email, :telefone, :cpf)");
-    $sql->bindValue(':nome', $nome);
-    $sql->bindValue(':email', $email);
-    $sql->bindValue(':telefone', $telefone);
-    $sql->bindValue(':cpf', $cpf);
-    $sql->execute();
-    echo "
-    <script>
-        alert('Cadastro realizado com sucesso!');
-        window.location.href = 'home.php';
-    </script>
-    ";
-}
+$sql = $pdo->prepare("INSERT INTO clients (nome, email, telefone, cpf) VALUES (:nome, :email, :telefone, :cpf)");
+$sql->bindValue(':nome', $nome);
+$sql->bindValue(':email', $email);
+$sql->bindValue(':telefone', $telefone);
+$sql->bindValue(':cpf', $cpf);
+$sql->execute();
+header('Location: listaDeClientes.php');
 
-addDatabase($pdo, $nome, $email, $telefone, $cpf);
+
 ?>
