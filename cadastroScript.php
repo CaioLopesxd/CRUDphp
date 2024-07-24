@@ -13,7 +13,7 @@ $emailStmt = $pdo->prepare("SELECT * FROM clients WHERE email = :email");
 $cpfStmt->execute([':cpf' => $cpf]);
 $emailStmt->execute([':email' => $email]);
 
-if ($cpfStmt->rowCount() > 1) {
+if ($cpfStmt->rowCount() > 0) {
     echo "
     <script>
         alert('CPF já cadastrado!');
@@ -23,12 +23,12 @@ if ($cpfStmt->rowCount() > 1) {
     exit;
 }
 
-if ($emailStmt->rowCount() > 1) {
+if ($emailStmt->rowCount() > 0) {
     echo "
    <script>
             alert('Email já cadastrado!');
             window.location.href = 'telaCadastro.php';
-        </script>
+    </script>
     ";
     exit;
 }
@@ -42,4 +42,4 @@ $sql->execute();
 header('Location: listaDeClientes.php');
 
 
-?>
+

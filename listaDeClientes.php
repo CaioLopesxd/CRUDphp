@@ -69,7 +69,7 @@
                 <div class="modal-body">
                     <form action="editarCliente.php" method="POST">
                         <div class="form-group">
-                            <label for="id">Id:</label>
+                            <label for="id">ID: <?=$client['id'];?></label>
                             <input type="hidden" class="form-control" id="id" name="id" value="<?=$client['id'];?>" readonly>
                         </div>
 
@@ -101,15 +101,5 @@
     </div>
     <?php endforeach; ?>
 <script src="scripts/validate.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.delete-btn').click(function() {
-            var id = $(this).data('id');
-            if (confirm('Deseja realmente excluir este cliente?')) {
-                window.location.href = 'delete.php?id=' + id;
-            }
-        });
-    });
-</script>
 </body>
 </html>

@@ -10,11 +10,14 @@ function formatCPF(value) {
   return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
 }
 
-function handleInput(event) {
-  const input = event.target;
-  if (input.id === "telefone") {
-    input.value = formatTelefone(input.value);
-  } else if (input.id === "cpf") {
-    input.value = formatCPF(input.value);
-  }
-}
+const deleteBtns = document.querySelectorAll('.delete-btn');
+
+deleteBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const confirmDelete = confirm('Deseja realmente excluir este cliente?');
+        if (confirmDelete) {
+            window.location.href = `delete.php?id=${id}`;
+        }
+    });
+});
