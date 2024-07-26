@@ -35,3 +35,13 @@ tr:nth-child(even) {
   display: flex;
   justify-content: space-between;
 }
+.topContainer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.searchInput input{
+  padding: 5px;
+  border-radius: 10px;
+}

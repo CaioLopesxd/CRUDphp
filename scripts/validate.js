@@ -9,7 +9,14 @@ function formatCPF(value) {
   if (value.length > 11) value = value.slice(0, 11); // Limita a 11 dígitos
   return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
 }
-
+function handleInput(event) {
+  const input = event.target;
+  if (input.id === "telefone") {
+    input.value = formatTelefone(input.value);
+  } else if (input.id === "cpf") {
+    input.value = formatCPF(input.value);
+  }
+}
 const deleteBtns = document.querySelectorAll('.delete-btn');
 
 deleteBtns.forEach(btn => {

@@ -9,4 +9,4 @@ if($id){
     $sql->execute();
 }
 header('Location: listaDeClientes.php');
-?>
+

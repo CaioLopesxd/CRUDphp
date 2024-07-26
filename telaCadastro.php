@@ -20,7 +20,7 @@
             <label for="email">Email: </label>
             <input type="email" placeholder="email@email.com" name="email" id="email">
             <label for="telefone">Telefone: </label>
-            <input type="text" name="telefone" id="telefone" placeholder="(99) 99999-4997" oninput="handleInput(event)">
+            <input type="text" name="telefone" id="telefone" placeholder="(99) 99999-9999" oninput="handleInput(event)">
             <label for="cpf">CPF: </label>
             <input type="text" name="cpf" id="cpf" placeholder="999.999.999-99" oninput="handleInput(event)">
             <div id="btnDiv">
