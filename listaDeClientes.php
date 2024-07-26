@@ -1,5 +1,10 @@
 <?php
 require "config.php";
+session_start();
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+}
 
 $lista = [];
 $sql = $pdo->query("SELECT * FROM clients");
@@ -9,7 +14,7 @@ if ($sql->rowCount() > 0) {
 if (isset($_GET['search']) && !empty($_GET['search'])) {
     $search = $_GET['search'];
     $sqlsearch = $pdo->prepare("SELECT * FROM clients WHERE cpf LIKE :cpf");
-    $sqlsearch->bindValue(':cpf', $search);
+    $sqlsearch->bindValue(':cpf', "%$search%");
     $sqlsearch->execute();
     $lista = $sqlsearch->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -20,16 +25,42 @@ if (isset($_POST['id']) && !empty($_POST['id'])) {
     $email = $_POST['email'];
     $telefone = $_POST['telefone'];
     $cpf = $_POST['cpf'];
-    
-    $sql = $pdo->prepare("UPDATE clients SET nome = :nome, email = :email, telefone = :telefone, cpf = :cpf WHERE id = :id");
-    $sql->bindValue(':id', $id);
-    $sql->bindValue(':nome', $nome);
-    $sql->bindValue(':email', $email);
-    $sql->bindValue(':telefone', $telefone);
-    $sql->bindValue(':cpf', $cpf);
-    $sql->execute();
-    header("Location: listaDeClientes.php");
+
+    try {
+
+    $emailCheck = $pdo->prepare("SELECT COUNT(*) FROM clients WHERE email = :email AND id != :id");
+    $emailCheck->bindValue(':email', $email);
+    $emailCheck->bindValue(':id', $id);
+    $emailCheck->execute();
+    $emailCount = $emailCheck->fetchColumn();
+
+    $cpfCheck = $pdo->prepare("SELECT COUNT(*) FROM clients WHERE cpf = :cpf AND id != :id");
+    $cpfCheck->bindValue(':cpf', $cpf);
+    $cpfCheck->bindValue(':id', $id);
+    $cpfCheck->execute();
+    $cpfCount = $cpfCheck->fetchColumn();
+
+    if ($emailCount > 0) {
+        echo '<script>alert("O email já está em uso.");</script>';
+    } elseif ($cpfCount > 0) {
+        echo '<script>alert("O CPF já está em uso.");</script>';
+    } else {
+        $sql = $pdo->prepare("UPDATE clients SET nome = :nome, email = :email, telefone = :telefone, cpf = :cpf WHERE id = :id");
+        $sql->bindValue(':id', $id);
+        $sql->bindValue(':nome', $nome);
+        $sql->bindValue(':email', $email);
+        $sql->bindValue(':telefone', $telefone);
+        $sql->bindValue(':cpf', $cpf);
+        $sql->execute();
+        header("Location: listaDeClientes.php");
+        exit();
+    }
+
+    } catch (PDOException $e) {
+        echo '<script>alert("Ocorreu um erro ao atualizar os dados.");</script>';
+    }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -141,6 +172,10 @@ if (isset($_POST['id']) && !empty($_POST['id'])) {
             </div>
         </div>
     <?php endforeach; ?>
+    <a href="login.php">login</a>
+    <button type="button" class="btn btn-danger quit-btn" data-id="<?=$_SESSION['id'] ?>">
+        sair
+    </button>
     <script src="scripts/validate.js"></script>
 </body>
 </html>

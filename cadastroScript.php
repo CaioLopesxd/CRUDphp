@@ -14,13 +14,11 @@ $cpfStmt->execute([':cpf' => $cpf]);
 $emailStmt->execute([':email' => $email]);
 
 if ($cpfStmt->rowCount() > 0) {
-    echo "
-    <script>
-        alert('CPF já cadastrado!');
-        window.location.href = 'telaCadastro.php';
-    </script>
-    ";
-    exit;
+    echo "<script>
+            alert('cpf!');
+            window.location.href = 'telaCadastro.php';
+         </script>";
+    exit();
 }
 
 if ($emailStmt->rowCount() > 0) {
@@ -30,7 +28,7 @@ if ($emailStmt->rowCount() > 0) {
             window.location.href = 'telaCadastro.php';
     </script>
     ";
-    exit;
+    exit();
 }
 
 $sql = $pdo->prepare("INSERT INTO clients (nome, email, telefone, cpf) VALUES (:nome, :email, :telefone, :cpf)");

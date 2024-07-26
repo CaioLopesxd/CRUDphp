@@ -1,3 +1,48 @@
+<?php
+
+require "config.php";
+session_start();
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$erro = "" ;
+if(isset($_POST['nome']) && !empty($_POST['nome'])) {
+    $nome = $_POST['nome'];
+    $email = $_POST['email'];
+    $telefone = $_POST['telefone'];
+    $cpf = $_POST['cpf'];
+    $cpfStmt = $pdo->prepare("SELECT * FROM clients WHERE cpf = :cpf");
+    $emailStmt = $pdo->prepare("SELECT * FROM clients WHERE email = :email");
+
+    $cpfStmt->execute([':cpf' => $cpf]);
+    $emailStmt->execute([':email' => $email]);
+
+    if ($cpfStmt->rowCount() > 0) {
+        $erro = "cpf já cadastrado!";
+        exit;
+    }
+
+    if ($emailStmt->rowCount() > 0) {
+        echo "
+        <script>
+            alert('Email já cadastrado!');
+            window.location.href = 'telaCadastro.php';
+        </script>
+        ";
+        exit;
+    }
+
+    $sql = $pdo->prepare("INSERT INTO clients (nome, email, telefone, cpf) VALUES (:nome, :email, :telefone, :cpf)");
+    $sql->bindValue(':nome', $nome);
+    $sql->bindValue(':email', $email);
+    $sql->bindValue(':telefone', $telefone);
+    $sql->bindValue(':cpf', $cpf);
+    $sql->execute();
+    header('Location: listaDeClientes.php');
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +59,7 @@
 <body>
     <div class="container">
         <h1>Cadastrar cliente</h1>
-        <form action="cadastroScript.php" method="POST" onsubmit="validateForm(event)">
+        <form action="" method="POST">
             <label for="nome">Nome: </label>
             <input type="text" placeholder="Nome Sobrenome" name="nome" id="nome">
             <label for="email">Email: </label>
