@@ -85,6 +85,7 @@ if (isset($_POST['id']) && !empty($_POST['id'])) {
                 <form action="">
                     <input type="text" placeholder="CPF" id="cpf" name="search" oninput="handleInput(event)" >
                     <button type="submit" class="btn btn-primary">Pesquisar</button>
+                    <button type="button" class="btn btn-danger quit-btn" data-id="<?=$_SESSION['id'] ?>">sair</button>
                 </form>
             </div>
         </div>
@@ -172,10 +173,6 @@ if (isset($_POST['id']) && !empty($_POST['id'])) {
             </div>
         </div>
     <?php endforeach; ?>
-    <a href="login.php">login</a>
-    <button type="button" class="btn btn-danger quit-btn" data-id="<?=$_SESSION['id'] ?>">
-        sair
-    </button>
     <script src="scripts/validate.js"></script>
 </body>
 </html>
