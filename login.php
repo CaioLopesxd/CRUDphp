@@ -62,7 +62,7 @@ if (isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['senha']) 
         </form>
         <div class="link">
             <a href="listaDeClientes.php">Esqueci minha senha</a>
-            <a href="cadastro.php">Cadastre-se</a>
+            <a href="cadastroUsuario.php">Cadastre-se</a>
         </div>
     </div>
 </body>

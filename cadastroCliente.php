@@ -8,6 +8,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 $erro = "" ;
+
 if(isset($_POST['nome']) && !empty($_POST['nome'])) {
     $nome = $_POST['nome'];
     $email = $_POST['email'];
@@ -21,26 +22,17 @@ if(isset($_POST['nome']) && !empty($_POST['nome'])) {
 
     if ($cpfStmt->rowCount() > 0) {
         $erro = "cpf já cadastrado!";
-        exit;
+    }else if ($emailStmt->rowCount() > 0) {
+        $erro = "Email já cadastrado!";
+    }else{
+        $sql = $pdo->prepare("INSERT INTO clients (nome, email, telefone, cpf) VALUES (:nome, :email, :telefone, :cpf)");
+        $sql->bindValue(':nome', $nome);
+        $sql->bindValue(':email', $email);
+        $sql->bindValue(':telefone', $telefone);
+        $sql->bindValue(':cpf', $cpf);
+        $sql->execute();
+        header('Location: listaDeClientes.php');
     }
-
-    if ($emailStmt->rowCount() > 0) {
-        echo "
-        <script>
-            alert('Email já cadastrado!');
-            window.location.href = 'telaCadastro.php';
-        </script>
-        ";
-        exit;
-    }
-
-    $sql = $pdo->prepare("INSERT INTO clients (nome, email, telefone, cpf) VALUES (:nome, :email, :telefone, :cpf)");
-    $sql->bindValue(':nome', $nome);
-    $sql->bindValue(':email', $email);
-    $sql->bindValue(':telefone', $telefone);
-    $sql->bindValue(':cpf', $cpf);
-    $sql->execute();
-    header('Location: listaDeClientes.php');
 }
 ?>
 <!DOCTYPE html>
@@ -61,19 +53,24 @@ if(isset($_POST['nome']) && !empty($_POST['nome'])) {
         <h1>Cadastrar cliente</h1>
         <form action="" method="POST">
             <label for="nome">Nome: </label>
-            <input type="text" placeholder="Nome Sobrenome" name="nome" id="nome">
+            <input type="text" placeholder="Nome Sobrenome" name="nome" id="nome"required>
             <label for="email">Email: </label>
-            <input type="email" placeholder="email@email.com" name="email" id="email">
+            <input type="email" placeholder="email@email.com" name="email" id="email" required>
             <label for="telefone">Telefone: </label>
-            <input type="text" name="telefone" id="telefone" placeholder="(99) 99999-9999" oninput="handleInput(event)">
+            <input type="text" name="telefone" id="telefone" placeholder="(99) 99999-9999" oninput="handleInput(event)" required>
             <label for="cpf">CPF: </label>
-            <input type="text" name="cpf" id="cpf" placeholder="999.999.999-99" oninput="handleInput(event)">
+            <input type="text" name="cpf" id="cpf" placeholder="999.999.999-99" oninput="handleInput(event)" required>
             <div id="btnDiv">
                 <button type="submit" id="cad">
                     Cadastrar
                 </button>
             </div>
         </form>
+    </div>
+    <div>
+        <?php if (!empty($erro)): ?>
+            <h1 class="error"><?php echo htmlspecialchars($erro); ?></h1>
+        <?php endif; ?>
     </div>
     <div>
         <a href="listaDeCLientes.php">Voltar</a>

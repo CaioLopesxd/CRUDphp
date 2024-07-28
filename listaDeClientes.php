@@ -5,7 +5,7 @@ if (!isset($_SESSION['id'])) {
     header("Location: login.php");
     exit();
 }
-
+$erro = '';
 $lista = [];
 $sql = $pdo->query("SELECT * FROM clients");
 if ($sql->rowCount() > 0) {
@@ -53,7 +53,6 @@ if (isset($_POST['id']) && !empty($_POST['id'])) {
         $sql->bindValue(':cpf', $cpf);
         $sql->execute();
         header("Location: listaDeClientes.php");
-        exit();
     }
 
     } catch (PDOException $e) {
@@ -121,7 +120,7 @@ if (isset($_POST['id']) && !empty($_POST['id'])) {
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <a href="telaCadastro.php" class="btn btn-success mt-3">Cadastro</a>
+        <a href="cadastroCliente.php" class="btn btn-success mt-3">Cadastro</a>
     </div>
     <?php foreach ($lista as $client): ?>
         <div class="modal fade" id="exampleModal<?= $client['id']; ?>" tabindex="-1" role="dialog"
