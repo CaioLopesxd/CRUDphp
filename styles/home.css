@@ -1,0 +1,49 @@
+/* styles/home.css */
+
+/* Reseta o padding e margin padrão do navegador */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo para o corpo da página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Container principal da página */
+.home-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 50%;
+    height: 100vh; /* Ocupa toda a altura da tela */
+}
+
+/* Estilo para o botão */
+button {
+    background-color: #007bff; /* Cor de fundo azul */
+    border: none;
+    border-radius: 5px;
+    padding: 15px 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo para o link dentro do botão */
+button a {
+    color: #fff; /* Cor do texto do link */
+    text-decoration: none; /* Remove o sublinhado do link */
+    font-size: 16px;
+}
+
+/* Efeito ao passar o mouse sobre o botão */
+button:hover {
+    background-color: #0056b3; /* Cor azul mais escura */
+}

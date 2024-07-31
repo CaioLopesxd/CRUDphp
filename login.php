@@ -24,7 +24,7 @@ if (isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['senha']) 
 
             if ($infoStmt->rowCount() > 0) {
                 $info = $infoStmt->fetch(PDO::FETCH_ASSOC);
-                header("Location: listaDeClientes.php");
+                header("Location: home.php");
                 $_SESSION['id'] = $info['id'];
                 exit();
             } else {
