@@ -25,5 +25,10 @@ CREATE TABLE `crud`.`users` (`id` INT NOT NULL AUTO_INCREMENT , `email` VARCHAR(
 
 ## Futuras atualizações:
 
-1. melhorar o sistema de registro e acesso aos dados da DB
+1. Adicionar uma tela onde você pode criar ordens de serviço e usar os clientes ja cadastrados.
+
+## Avisos:
+
+1. A opção criar usuario deve ser usada apenas uma vez, nesse projeto, como apenas uma empresa vai ter acesso ao DB, certo era deixar apenas um login,
+porém deixei a opção la para testes. 
 
